@@ -20,27 +20,37 @@
         text-align: center;
       }
       h1, h2 {
-        max-width: 80%;
         font-size: 300;
+		max-width:80%;
       }
       .fs-gal {
-        width: 100px;
-        height: auto;
-        float: left;
+        width: auto;
+        height: 100px;        
       }
     </style>
   </head>
   <body>
 
-    <!-- Create objects with class 'fs-gal' and include the data-attribute 'data-url' with the relative or absolute path which is to be displayed. -->
-    <!-- <img class="fs-gal" src="img/example1.jpg" alt="Example Image 1" data-url="img/example1.jpg" />
-    <img class="fs-gal" src="img/example2.jpg" title="Example Image 2" data-url="img/example2.jpg" />
-    <img class="fs-gal" src="img/eiffel.jpg" data-url="img/eiffel.jpg" />
-    <img class="fs-gal" src="img/panorama.jpg" data-url="img/panorama.jpg" /> -->
-    <img class="fs-gal" src="img/example1.jpg" alt="Example Image 1" data-url="https://images.pexels.com/photos/443446/pexels-photo-443446.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=1701&w=2633" />
+    <!--	
+	
+		Create objects with class 'fs-gal' and include the data-attribute 'data-url' with the relative or absolute path which is to be displayed. 
+		If data-url is not specified, "src" attribute will be used as image path.
+		You can also have multiple galleries by using data-gallery attribute in order to create different groups
+	
+	-->	
+	
+    <h3>Gallery 1</h3>
+	<img class="fs-gal" src="img/example1.jpg" alt="Example Image 1" data-url="https://images.pexels.com/photos/443446/pexels-photo-443446.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=1701&w=2633" />
     <img class="fs-gal" src="img/example2.jpg" title="Example Image 2" data-url="https://images.pexels.com/photos/374710/pexels-photo-374710.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=1701&w=2633" />
     <img class="fs-gal" src="img/eiffel.jpg" data-url="img/eiffel.jpg" />
     <img class="fs-gal" src="img/panorama.jpg" data-url="img/panorama.jpg" />
+	<hr/>
+	<h3>Gallery 2</h3>
+	<img class="fs-gal" data-gallery='gal_02' src="img/awat.jpg"  />
+    <img class="fs-gal" data-gallery='gal_02' src="img/machu.jpg" />
+	<hr/>
+	<h3>Gallery 3</h3>
+	<img class="fs-gal" data-gallery='gal_03' src="img/carnac.jpg"  />
 
     <!-- Full screen gallery -->
     <div class="fs-gal-view">

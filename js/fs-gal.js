@@ -31,51 +31,81 @@ $('document').ready(function() {
     imgElem = $('.fs-gal-main');
     imgElem.attr('title', title);
     imgElem.attr('alt', alt);
-    imgElem.attr('src', obj.attr('data-url'));
+    imgElem.attr('src', obj.attr('data-url') ? obj.attr('data-url') : obj.attr('src'));
     $('.fs-gal-view > h1').text(title);
     if (!title || title == '') { $('.fs-gal-view > h1').fadeOut(); }
     else { $('.fs-gal-view > h1').fadeIn(); }
 
-    // Create buttons
-    var current = $('.fs-gal').index(obj);
+    // Create buttons	
+	var gallery = $(obj).attr('data-gallery');
+	var selector = gallery ? '.fs-gal[data-gallery="'+gallery+'"]' : '.fs-gal:not([data-gallery])';
+    var current = $(selector).index(obj);
     var prev = current - 1;
     var next = current + 1;
     if (prev >= 0) {
       $('.fs-gal-view > .fs-gal-prev').attr('data-img-index', prev);
+	  if(gallery)
+			$('.fs-gal-view > .fs-gal-prev').attr('data-gallery',gallery);
+		
       $('.fs-gal-view > .fs-gal-prev').fadeIn();
     }
-    if (next < $('.fs-gal').length) {
+	
+	var length = gallery ? $('.fs-gal[data-gallery="'+gallery+'"]').length : $('.fs-gal:not([data-gallery])').length;
+	
+    if (next < length) {
       $('.fs-gal-view > .fs-gal-next').attr('data-img-index', next);
+	  if(gallery)
+		  $('.fs-gal-view > .fs-gal-next').attr('data-gallery',gallery);
+	  else
+		  $('.fs-gal-view > .fs-gal-next').removeAttr('data-gallery');
+	  
       $('.fs-gal-view > .fs-gal-next').fadeIn();
     }
     $('.fs-gal-view').fadeIn(); // Display gallery
-    if (current == $('.fs-gal').length - 1)  { // Last image
+    if (current == length - 1)  { // Last image
         $('.fs-gal-view > .fs-gal-next').attr('data-img-index', 0);
-        $('.fs-gal-view > .fs-gal-next').fadeIn();
+		
+		if(gallery)
+			$('.fs-gal-view > .fs-gal-next').attr('data-gallery',gallery);
+		else
+			$('.fs-gal-view > .fs-gal-next').removeAttr('data-gallery');
+		
     }
-    else if (current == 0)  { // Last image
+    else if (current == 0)  { // first image
         $('.fs-gal-view > .fs-gal-prev').attr('data-img-index', $('.fs-gal').length - 1);
-        $('.fs-gal-view > .fs-gal-next').fadeIn();
+		if(gallery)
+			$('.fs-gal-view > .fs-gal-prev').attr('data-gallery',gallery);
+		else
+			$('.fs-gal-view > .fs-gal-prev').removeAttr('data-gallery');
+		
     }
+	
+	
+		if(length > 1)			
+			$('.fs-gal-view > .fs-gal-next').fadeIn();
+		else
+			$('.fs-gal-view > .fs-gal-next').fadeOut();
 
     // preload next images
-    preloadNextAndPrev();
+    preloadNextAndPrev(gallery);
     
   }
 
   // Preload next and previous image
-  function preloadNextAndPrev() {
+  function preloadNextAndPrev(gallery) {
     fs_gal_preloads = new Array();
     // previous
     index = $('.fs-gal-view > .fs-gal-prev').attr('data-img-index');
-    elem = $($('.fs-gal').get(index));
-    img = elem.attr('data-url');
-    preloadImage(img);
+    elem = gallery ? $($('.fs-gal[data-gallery="'+gallery+'"]').get(index)) : $($('.fs-gal:not([data-gallery])').get(index));
+    img = elem.attr('data-url') ? elem.attr('data-url') : elem.attr('src');
+	if(img)
+		preloadImage(img);
     // next
     index = $('.fs-gal-view > .fs-gal-next').attr('data-img-index');
-    elem = $($('.fs-gal').get(index));
-    img = elem.attr('data-url');
-    preloadImage(img);
+    elem = gallery ? $($('.fs-gal[data-gallery="'+gallery+'"]').get(index)) : $($('.fs-gal:not([data-gallery])').get(index));
+    img = elem.attr('data-url') ? elem.attr('data-url') : elem.attr('src');
+    if(img)
+		preloadImage(img);
   }
 
   // Preload an image
@@ -88,8 +118,9 @@ $('document').ready(function() {
   // Gallery navigation
   $('.fs-gal-view .fs-gal-nav').click(function(e) {
     e.stopPropagation();
-    var index = $(this).attr('data-img-index');
-    var img = $($('.fs-gal').get(index));
+    var index = $(this).attr('data-img-index');	
+    var gallery = $(this).attr('data-gallery');
+    var img = gallery ? $($('.fs-gal[data-gallery="'+gallery+'"]').get(index)) :  $($('.fs-gal:not([data-gallery])').get(index));
     fsGal_DisplayImage(img);
   });
 
